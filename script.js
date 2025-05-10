@@ -250,15 +250,21 @@
             overlay.appendChild(spinner);
             overlay.appendChild(loadingText);
             overlay.appendChild(progressText);
+            document.body.appendChild(overlay);
 
             return { overlay, progressText };
         }
-            async processActivities() {
-            alert("Script feito por Marcos Tutoriais (𝓒𝓥𝓐) - Tela de carregamento atualizada");
+
+        async processActivityPage(pageId) {
+            const { overlay, progressText } = this.createLoadingOverlay();
+            try {
+                await this.pageCompletionService.markPageAsCompleted(pageId);
+                progressText.innerText = "Página concluída!";
+            } catch (error) {
+                console.error("Erro ao processar a página:", error);
+                progressText.innerText = "Erro ao completar a página.";
+            }
+            document.body.removeChild(overlay);
         }
     }
-
-    // Você pode iniciar aqui se necessário:
-    // new ActivityProcessorUI().processActivities();
-
 })();
